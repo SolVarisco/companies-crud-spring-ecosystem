@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    username: ${spring.datasource.username}
+    hikari:
+      maximum-pool-value: ${spring.datasource.hikari.maximum-pool-value}
+      connection-timeout: ${spring.datasource.hikari.connection-timeout}
+    url: ${spring.datasource.url}
+    password: ${spring.datasource.password}
+  application:
+    name: companies-crud
+  profiles:
+    default: default
+  config:
+    import: "optional:configserver:http://localhost:7777"
+server:
+  servlet:
+    context-path: /companies-crud
+  port: 8081
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+eureka:
+  instance:
+    instance-id: "${spring.application.name}:${random.value}"
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
